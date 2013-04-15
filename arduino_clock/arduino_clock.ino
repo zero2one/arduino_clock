@@ -33,6 +33,9 @@
 #define MODE_SET_MONTH    4
 #define MODE_SET_YEAR     5
 
+// define LCD size
+#define LCD_LENGTH 16
+#define LCD_ROWS    2
 
 
 // Setup the LCD display
@@ -53,7 +56,7 @@ void setup() {
   pinMode(BTN_SET_MIN, INPUT);
   
   // init LCD
-  lcd.begin(16, 2);
+  lcd.begin(LCD_LENGTH, LCD_ROWS);
   
   // set the initial time (2013-01-01 12:00:00)
   setTime(12, 0, 0, 1, 1, 2013);
@@ -117,8 +120,16 @@ void btnModeDetection() {
  * Print out time & date on the display
  */
 void timePrint() {
-  String timeDisplay = digitString(hour()) + ':' + digitString(minute()) + ':' + digitString(second());
-  String dateDisplay = digitString(day()) + '-' + digitString(month()) + '-' + digitString(year());
+  String timeDisplay = digitString(hour()) 
+    + ':' 
+    + digitString(minute()) 
+    + ':' 
+    + digitString(second());
+  String dateDisplay = digitString(day()) 
+    + '-' 
+    + digitString(month()) 
+    + '-' 
+    + digitString(year());
   
   //Serial.print(timeDisplay);
   //Serial.println(); 
@@ -129,11 +140,11 @@ void timePrint() {
 
 /**
  * Helper to convert a time/date value to String object
- * It will prepend values lower then ten with a leading 0
+ * It will prepend values lower then 10 with a leading 0
  */
 String digitString(int digits){
-  // utility function for digital clock display: prints preceding colon and leading 0
   String digitsString = String(digits);
+  
   if(digits < 10) {
     digitsString = "0" + digitsString;
   }
@@ -164,7 +175,7 @@ void lcdPrintText(int lineNum, String lineText) {
 /**
  * Clear the given line number
  *
- * @param int lineNum
+ * @TODO: make this smarter!
  */
 void lcdClearLine(int lineNum) {
   lcd.setCursor(0, lineNum);
