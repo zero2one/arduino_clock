@@ -78,7 +78,6 @@ void loop() {
       break;
       
     default:
-      lcdClearLine(0);
       lcdPrintText(0, "Mode : " + String(currentMode));
       break;
   }
@@ -99,13 +98,32 @@ void loop() {
  * @TODO: build in check to avoid multiple key press detection!
  */
 void btnModeDetection() {
+  static int lastBtnState = 0;
   int pressed = digitalRead(BTN_MODE);
+  
+  /*
+  Serial.print(lastBtnState);
+  Serial.print("-");
+  Serial.print(pressed);
+  Serial.println(); 
+  */
+  
+  // check if the last known button state is the same 
+  // as the current
+  if (pressed == lastBtnState) {
+    return;
+  }
+  
+  lastBtnState = pressed;
+  
+  // no action required if not pressed
   if (pressed != HIGH) {
     return;
   }
   
+  // update the screen mode
   currentMode++;
-  if (currentMode > 5) {
+  if (currentMode > MODE_SET_YEAR) {
     currentMode = 0;
   }
 }
